@@ -1,0 +1,38 @@
+.main_container{
+    width:80%;
+    margin-top: 3%;
+    border: ridge;
+    border-radius: 1rem;
+    box-shadow:4px 4px;
+    background-color: #f2f2f2;
+    margin-left: 7%;
+}
+.form-control{
+    border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+a{
+  text-decoration:none;
+  color:inherit;
+}
+.sidebar-list{
+  margin-top:10px;
+
+}
+.dashboard_table_head
+{
+  text-align: center;
+}
+.dashboard_table_data{
+  text-align:center;
+}
+.sidebar_container{
+  list-style-type: circle;
+}
+.dropdown{
+  background-color:black;
+  padding:8px;
+  color:white;
+  text-align:center;
+}
