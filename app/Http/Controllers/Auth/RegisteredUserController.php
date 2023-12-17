@@ -63,17 +63,22 @@ class RegisteredUserController extends Controller
         //assign role to user
         $user->assignRole($role->name);
 
-        //get image 
-        $imageName = time().'.'.$request->image->getClientOriginalExtension();
-        $request->image->move(public_path('images'),$imageName);
+        //if role is user then no need of image
+        if($role->name != 'User')
+        {
+            
+            //get image 
+            $imageName = time().'.'.$request->image->getClientOriginalExtension();
+            $request->image->move(public_path('images'),$imageName);
 
-        //image detail
-        $image_detail = [
-            'image'   => $imageName,
-        ];
+            //image detail
+            $image_detail = [
+                'image'   => $imageName,
+            ];
 
-        $user->images()->create($image_detail);
+            $user->images()->create($image_detail);
 
+        }
         Session::flash('success',''.ucfirst($user->name).' account is successfully created');
         
         $this->activity(Auth::user()->name,Auth::user()->email,$user->name. ' account is successfully created','success');

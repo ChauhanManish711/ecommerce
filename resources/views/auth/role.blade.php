@@ -28,7 +28,9 @@
     <td>{{ucfirst($role->name)}}</td>
     <td>{{$role->created_at}}</td>
     <td>{{$role->updated_at}}</td>
-    <td>Edit / Delete </td>
+    <td>
+        <button class="btn  btn-primary edit_user" value="{{$role->id}}">Edit</button>
+        / Delete </td>
     </tr>
     @endforeach
     @endif

@@ -46,7 +46,6 @@ class AuthenticatedSessionController extends Controller
             if(Auth::Attempt($user)){
 
             $request->session()->regenerate();
-
             if(Auth::user()->hasPermissionTo('admin-dashboard'))
             {            
                 Session::flash('success','Welcome , '.ucfirst(Auth::user()->name));

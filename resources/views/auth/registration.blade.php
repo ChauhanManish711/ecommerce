@@ -33,7 +33,7 @@
           <div class="row mt-4">
           <label class="col-md-3" for="role">Role</label>
             <div class="col-md-2">
-              <select name="role_id" class="dropdown">
+              <select name="role_id" class="dropdown" id="roles">
                 <option value="">Select Role</option>
                 @foreach($roles as $role)
                 @if(isset($user) && $user->hasRole($role))
@@ -48,7 +48,7 @@
             </div>
           </div>
         @endif
-          <div class="row mt-4">
+          <div class="row mt-4" id="image_row">
             <label class="col-md-3" for="image">Picture</label>
             <div class="col-md-4">
               <input type="file" name="image" id="image">

@@ -31,3 +31,12 @@ $("#choose_permission").hover(function(){
 $("#choose_permission").click(function(){
     $("#select_permission").toggle();
 });
+$("#roles").on('change',function(){
+    if($(this).val() == '6')
+    {
+        $("#image_row").hide();
+    }
+    else{
+        $("#image_row").show();
+    }
+});
