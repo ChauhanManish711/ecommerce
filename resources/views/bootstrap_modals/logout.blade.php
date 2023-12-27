@@ -9,7 +9,7 @@
     <div class="modal-body text-center">
        Name : {{ucfirst(auth()->user()->name)}}<br>
        Email : {{auth()->user()->email}}<br>    
-       Role :  Admin
+       Role :  {{auth()->user()->roles()->first()->name}}
     </div>
     <div class="modal-footer">
         <a href="{{route('logout')}}" class="btn btn-primary">Logout</a>
