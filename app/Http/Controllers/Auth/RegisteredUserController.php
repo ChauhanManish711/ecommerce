@@ -18,8 +18,13 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Image;
 use DB;
 use App\Traits\ActivityLogs;
+use App\Models\ActivityLog;
 use Spatie\Permission\Models\Role;
 use App\Jobs\TestJob;
+use App\Jobs\DeleteActivitiesBulk;
+use Illuminate\Bus\Batch;
+use Throwable;
+use Illuminate\Support\Facades\Bus;
 
 class RegisteredUserController extends Controller
 {
@@ -227,12 +232,27 @@ class RegisteredUserController extends Controller
     }
     public function test_job(Request $request)
     {
-        $users = User::all();
-        foreach($users as $user)
+        try{
+            $users = User::all();
+            //create batch 1
+            $batch1 = null; 
+            if(isset($users) && $users->count() > 0)
+            {
+                // dispatch your queue job
+                $batch1 = new TestJob($users);
+            }
+            //dispatch batch
+            $batch = Bus::batch([$batch1])->then(function ($batch){
+                //get all activities
+                $activites = ActivityLog::all();
+                //delete opration
+                DeleteActivitiesBulk::dispatch($activites);
+            })->dispatch();
+
+            return redirect()->route('activity.all',['batch_id'=>$batch->id]);
+        }catch(\Exception $err)
         {
-            // dispatch your queue job
-            TestJob::dispatch($user);
+            return redirect()->route('activity.all');
         }
-        return redirect()->route('activity.all');
     }
 }

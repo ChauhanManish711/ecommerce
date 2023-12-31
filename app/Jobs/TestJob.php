@@ -8,21 +8,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Bus\Batchable;
 use App\Models\User;
 use App\Traits\ActivityLogs;
 use Auth;
 
 class TestJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels,ActivityLogs;
+    use Batchable,Dispatchable, InteractsWithQueue, Queueable, SerializesModels,ActivityLogs;
 
     /**
      * Create a new job instance.
      */
-    protected $user;
-    public function __construct($user)
+    protected $users;
+    public function __construct($users)
     {
-        $this->user = $user;
+        $this->users = $users;
     }
 
     /**
@@ -30,8 +31,13 @@ class TestJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $user=$this->user;
-        $this->activity($user->name, $user->email, 'queue jobs test' , 'success');
-        dump('done');
+        if ($this->batch()->cancelled()) {
+            // Determine if the batch has been cancelled...
+            return;
+        }
+        foreach($this->users as $user)
+        {
+            $this->activity($user->name, $user->email, 'queue jobs test' , 'success');
+        }
     }
 }

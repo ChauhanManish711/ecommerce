@@ -1,3 +1,24 @@
+$(document).ready(function() {
+    var progressText = $('#progress').text();
+    if(progressText)
+    {
+        // console.log($('#progress').text());
+        var progress = $("#progress").text();
+        if(progress<100)
+        {
+            $("#test_jobs").hide();
+            window.setTimeout(function(){
+                // Move to a new location or you can do something else
+                window.location.href = window.location;
+            }, 1000); 
+        }
+        if(progress==100)
+        {
+            $("#progress_row").show();
+            $("#test_jobs").show();
+        }
+    }
+});
 $('#logout').click(function(){
     $('#logoutModal').modal('show');
 });
