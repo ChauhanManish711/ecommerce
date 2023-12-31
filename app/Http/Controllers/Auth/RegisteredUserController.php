@@ -19,6 +19,7 @@ use App\Models\Image;
 use DB;
 use App\Traits\ActivityLogs;
 use Spatie\Permission\Models\Role;
+use App\Jobs\TestJob;
 
 class RegisteredUserController extends Controller
 {
@@ -223,5 +224,15 @@ class RegisteredUserController extends Controller
             'user' => $user,
             'user_image'=>$user_image
         ]);
+    }
+    public function test_job(Request $request)
+    {
+        $users = User::all();
+        foreach($users as $user)
+        {
+            // dispatch your queue job
+            TestJob::dispatch($user);
+        }
+        return redirect()->route('activity.all');
     }
 }
