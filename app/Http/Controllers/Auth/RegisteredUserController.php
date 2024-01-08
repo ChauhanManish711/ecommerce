@@ -71,8 +71,7 @@ class RegisteredUserController extends Controller
 
         //if role is user then no need of image
         if($role->name != 'User')
-        {
-            
+        { 
             //get image 
             $imageName = time().'.'.$request->image->getClientOriginalExtension();
             $request->image->move(public_path('images'),$imageName);

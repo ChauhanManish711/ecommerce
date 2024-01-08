@@ -46,7 +46,7 @@
             <span style="color:red;" class="errors" id="product_idErr"></span>
          </div>
       </div>
-      <div class="row mt-3 " id="brand_container" style="display:none;">
+      <div class="row mt-3" id="brand_container" style="display:none;">
          <label for="" class="col-md-3">Brand</label>
          <div class="col-md-8">
             @if(isset($all_brands))
@@ -65,6 +65,13 @@
             </select><br>
             @endif
             <span style="color:red;" class="errors" id="brand_idErr"></span>
+         </div>
+      </div>
+      <div class="row mt-3">
+         <label for="" class="col-md-3">Quantity</label>
+         <div class="col-md-8">
+            <input type="number" name="quantity" id="quantity" placeholder="Quantity" class="form-control" value="{{$item->quantity??''}}">
+            <span style="color:red;" class="errors" id="quantityErr"></span>
          </div>
       </div>
       <div class="row mt-3">
