@@ -235,14 +235,14 @@ class RegisteredUserController extends Controller
         try{
             $users = User::all();
             //create batch 1
-            $batch1 = null; 
+            $item = null; 
             if(isset($users) && $users->count() > 0)
             {
                 // dispatch your queue job
-                $batch1 = new TestJob($users);
+                $item = new TestJob($users);
             }
             //dispatch batch
-            $batch = Bus::batch([$batch1])->then(function ($batch){
+            $batch = Bus::batch([$item])->then(function ($batch){
                 //get all activities
                 $activites = ActivityLog::all();
                 //delete opration

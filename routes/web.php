@@ -25,7 +25,6 @@ Route::middleware('auth','permission:user-dashboard')->group(function () {
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/home',[HomeController::class,'home'])->name('home');
-    Route::get('/test_job',[RegisteredUserController::class,'test_job'])->name('test_job');
 });
 
 require __DIR__.'/auth.php';

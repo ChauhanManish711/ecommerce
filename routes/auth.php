@@ -20,7 +20,7 @@ Route::fallback(function ()
 {
 });
 
-// Route::middleware('guest')->group(function () {
+Route::middleware('guest')->group(function () {
 
 
 Route::get('login', [AuthenticatedSessionController::class, 'create'])
@@ -31,7 +31,7 @@ Route::get('/', [AuthenticatedSessionController::class, 'create']);
 Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
 
-// });
+});
 
 // Route::middleware(['auth','verified'])->group(function () {
 Route::group(['middleware'=>['auth','verified']],function(){ 
@@ -78,6 +78,9 @@ Route::group(['middleware'=>['auth','verified']],function(){
             Route::get('get_brands',[ItemController::class,'get_brands'])->name('get.brands');
 
             Route::get('get_item',[ItemController::class,'get_item'])->name('get.item');
+
+            Route::get('/test_job',[RegisteredUserController::class,'test_job'])->name('test_job');
+
         });
         Route::group(['middleware'=>'permission:product-create'],function(){
             //items

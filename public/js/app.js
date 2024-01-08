@@ -14,8 +14,9 @@ $(document).ready(function() {
         }
         if(progress==100)
         {
-            $("#progress_row").show();
-            $("#test_jobs").show();
+            setTimeout(function(){
+            window.location.href = '/all_activities';
+            },2000);
         }
     }
 });
@@ -60,4 +61,23 @@ $("#roles").on('change',function(){
     else{
         $("#image_row").show();
     }
+});
+$(".permissions").hover(function(){
+    $('.permissions').css("cursor", "pointer");
+    $(this).css("background-color", "blue");
+    $(this).css("color", "white");
+});
+$(".permissions").mouseleave(function(){
+    $(this).css("background-color", "lightblue");
+    $(this).css("color", "");
+});
+$("#checkbox").change(function(){
+        if(this.checked)
+        {
+            $('.checkbox').prop('checked', true);
+        }
+        else{
+            $('.checkbox').prop('checked', false);
+        }
+
 });
