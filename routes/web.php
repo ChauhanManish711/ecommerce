@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\UserDashboard\HomeController;
+use App\Http\Controllers\CartController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +26,8 @@ Route::middleware('auth','permission:user-dashboard')->group(function () {
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/home',[HomeController::class,'home'])->name('home');
+    Route::get('/add-to-cart',[CartController::class,'add_cart'])->name('add-to-cart');
+    Route::get('/user-cart',[CartController::class,'user_cart'])->name('user_cart');
 });
 
 require __DIR__.'/auth.php';

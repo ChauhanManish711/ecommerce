@@ -178,29 +178,36 @@ class RegisteredUserController extends Controller
                             'password' =>Hash::make($request->password)
                             ];
             //update 
-            $updated_user = User::where('id',$request->id)->update($updated_info);
-            
-            if($updated_user>0)
-            {
-                if(isset($request->image)){
-                    //get image 
-                   $imageName = time().'.'.$request->image->getClientOriginalExtension();
-                   $request->image->move(public_path('images'),$imageName);
-       
-                   //image detail
-                   $image_detail = [
-                       'image'   => $imageName,
-                   ];
-                   
-                   $update_image  = User::find($request->id)->images->update($image_detail);
+            $updated_user = User::find($request->id)->update($updated_info);
+            $update_user = User::find($request->id);
+            //assign Role
+            $update_role = $update_user->roles()->sync($request->role_id);
 
-                   if($update_image != 1){
-                   Session::flash('error',''.ucfirst($updated_info['name']).' image not update');
-                   $this->activity(Auth::user()->name,Auth::user()->email,$updated_info['name'] .' accounts updation successfully','success');
-                   // return redirect()->route('dashboard');
-                   return response()->json([
-                       'location' => route('dashboard')
-                   ]);
+            $update_user->assignRole();
+            if($updated_user>0)
+            {  
+                if($request->role_id != '6')
+                {
+                    if(isset($request->image)){
+                        //get image 
+                    $imageName = time().'.'.$request->image->getClientOriginalExtension();
+                    $request->image->move(public_path('images'),$imageName);
+        
+                    //image detail
+                    $image_detail = [
+                        'image'   => $imageName,
+                    ];
+                    
+                    $update_image  = User::find($request->id)->images->update($image_detail);
+
+                    if($update_image != 1){
+                    Session::flash('error',''.ucfirst($updated_info['name']).' image not update');
+                    $this->activity(Auth::user()->name,Auth::user()->email,$updated_info['name'] .' accounts updation successfully','success');
+                    // return redirect()->route('dashboard');
+                    return response()->json([
+                        'location' => route('dashboard')
+                    ]);
+                        }
                     }
                 }
                 Session::flash('success',''.ucfirst($updated_info['name']).' successfully updated');

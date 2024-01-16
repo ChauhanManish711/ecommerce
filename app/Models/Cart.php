@@ -11,5 +11,5 @@ class Cart extends Model
 
     protected $table = "user_item";
 
-    protected $fillable = ['user_id','item_id'];
+    protected $fillable = ['user_id','item_id','quantity'];
 }

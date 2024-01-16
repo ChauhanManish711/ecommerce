@@ -27,7 +27,7 @@ class ProductController extends Controller
     public function items(Request $request){
         $items = Item::join('brands','items.brand_id' ,'=','brands.id')
                         ->join('products','products.id','=', 'brands.product_id')
-                        ->select('items.id', 'items.name', 'items.price', 'items.brand_id', 'products.id AS product_id', 'products.name AS product_name')
+                        ->select('items.id', 'items.name', 'items.price', 'items.brand_id', 'items.quantity', 'products.id AS product_id', 'products.name AS product_name')
                         ->orderBy('items.id', 'desc');
         //when fetch records according to brand
         if(isset($request->brand_id))

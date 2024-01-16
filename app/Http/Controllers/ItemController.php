@@ -106,19 +106,20 @@ class ItemController extends Controller
         );
     }
     //delete item
-    public function delete_item(Request $request)
+    public function delete_item(Request $request , $id)
     {
         try{
-        $item_id = $request->item_id;
-        $item = Item::find($item_id);
+        // $item_id = $request->item_id;
+        $item = Item::find($id);
         // $delete_image = $item->image->delete();
         // if($delete_image == true)
         // {
             $item->delete();
-            Session::flash('success',''.$item->name.' is successfully delete');
-            return response()->json([
-                'redirect' => route('products.all')
-            ]);
+            Session::flash('success',''.$item->name.' is successfully deleted.');
+            return redirect()->back();
+            // return response()->json([
+            //     'redirect' => route('products.all')
+            // ]);
         // }
         }
         catch(\Exception $err)

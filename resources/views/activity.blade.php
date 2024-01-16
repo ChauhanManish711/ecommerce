@@ -3,7 +3,7 @@
 <div>
     <h2 class="text-primary text-center mt-2">Activity Log</h2>
     <div> 
-        <a href="{{route('test_job')}}" id="test_jobs" class="btn btn-success">Delete all activity  </a><br>
+        <a href="{{route('test_job')}}" id="test_jobs" class="btn btn-success">Delete with queue. </a><br>
         @if(isset($batch))
             <span id="progress_row">Delete Process Complete:<span id="progress">{{$batch->progress()}}</span>%</span><br>
         @endif

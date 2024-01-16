@@ -20,15 +20,16 @@ Route::fallback(function ()
 {
 });
 
-Route::middleware('guest')->group(function () {
+
+Route::group(['middleware'=>'check_already_loggedIn'],function () {
 
 
-Route::get('login', [AuthenticatedSessionController::class, 'create'])
-            ->name('login');
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])
+                ->name('login');
 
-Route::get('/', [AuthenticatedSessionController::class, 'create']);
+    Route::get('/', [AuthenticatedSessionController::class, 'create']);
 
-Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
 
 });
@@ -94,6 +95,7 @@ Route::group(['middleware'=>['auth','verified']],function(){
 
         Route::group(['middleware'=>'permission:product-edit'],function(){
             Route::get('edit_item/{id}',[ItemController::class,'edit_item'])->name('edit.item');
+            Route::get('delete_item/{id}',[ItemController::class,'delete_item'])->name('delete.item');
             Route::post('update_item',[ItemController::class,'update_item'])->name('update.item');
         });
 

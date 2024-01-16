@@ -6,10 +6,13 @@
           <a href="{{route('home')}}">Home</a>
         </li>
         <li style="margin-inline: 3%;">
-          <a href="#">Link</a>
+          <a href="{{route('user_cart')}}">Cart</a>
         </li>
         <li class="nav-item">
-          <a href="#">Disabled</a>
+          <a href="#">About us</a>
+        </li>
+        <li class="nav-item" style="margin-inline: 3%;">
+          <a href="#">Contact us</a>
         </li>
       </ul>
     </div>

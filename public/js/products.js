@@ -9,7 +9,7 @@ function documentReady(brand_id,search,page){
         url : '/items',
         data:{brand_id:brand_id , search:search,page:page},
         success:function(response){
-            console.log(response);
+            // console.log(response);
             // var specific_product = $("#specific_product option:selected").text();
             // $("#record_listing_heading").html('All '+specific_product+'');
             $("#record_listing_body").html("");
@@ -20,12 +20,13 @@ function documentReady(brand_id,search,page){
             if(response.data.data.length>0){
             //for pagination
             $.each(response.data.data,function(key ,value){
+                console.log(response.data.data);
                 $("#record_listing_body").
                 append
                 ("<tr><td>"+value.name.charAt(0).toUpperCase() + value.name.slice(1)+"</td><td>"
                 +value.product_name+"</td><td>"+value.price+
-                "</td><td><button class='btn btn-success view_item' value="+value.id+
-                ">View</button> <a class='btn btn-primary edit_item' href='/edit_item/"+value.id+"'>Edit</a> <button class='btn btn-danger trash_item' value='"+value.id+"'>Delete</button></td></tr>")
+                "</td><td>"+value.quantity+"</td><td><button class='btn btn-success view_item' value="+value.id+
+                ">View</button> <a class='btn btn-primary edit_item' href='/edit_item/"+value.id+"'>Edit</a> <a href='/delete_item/"+value.id+"' class='btn btn-danger trash_item' value='"+value.id+"'>Delete</a></td></tr>")
             });
             //for pagination
             $.each(response.data.links,function(key , value){

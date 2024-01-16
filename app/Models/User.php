@@ -52,4 +52,8 @@ class User extends Authenticatable
     {
         return $this->morphOne(Image::class,'imageable');
     }
+    public function carts()
+    {
+        return $this->belongsToMany(Item::class,'user_item')->withPivot('id','quantity');
+    }
 }

@@ -14,7 +14,7 @@ class Item extends Model
     use HasFactory , SoftDeletes;
 
     protected $fillable = [
-        'name','brand_id','price','description'
+        'name','brand_id','price','description','quantity'
     ];
 
     public function brands():BelongsTo
@@ -24,5 +24,9 @@ class Item extends Model
     public function image(): MorphOne
     {
         return $this->morphOne(Image::class,'imageable');
+    }
+    public function users()
+    {
+        return $this->belongsToMany(Item::class,'user_item');
     }
 }

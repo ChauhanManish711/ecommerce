@@ -31,6 +31,7 @@
             <th>Name</th>
             <th>Category</th>
             <th>Price</th>
+            <th>Quantity</th>
             <th>Action</th>
     </thead>
     <tbody id="record_listing_body">
