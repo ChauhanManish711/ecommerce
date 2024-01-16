@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\Item;
 class CartController extends Controller
 {
+    //cart page
     public function user_cart(Request $request)
     {
         $user_cart = \Auth::user()->carts()->get();
@@ -20,6 +21,7 @@ class CartController extends Controller
         }
         return view('user_dashboard.user_cart',compact('user_cart','quantity_total','total_price'));
     }
+    // User add item to cart
     public function add_cart(Request $request)
     {
         try{
@@ -56,4 +58,33 @@ class CartController extends Controller
             ]);
         }
     }
+    // User remove item from cart
+    public function remove_item(Request $request)
+    {
+        try{
+            $user_item_id = $request->user_item_id;
+            $user_item = Cart::find($user_item_id);
+            $user_item->update(['quantity'=>$user_item->quantity-1]);
+            $updated_user_item = Cart::find($user_item_id);
+            $item = Item::find($updated_user_item->item_id);
+            $cart = \Auth::user()->carts()->get();
+            $quantity_total = 0;
+            $price_total = 0;
+            foreach($cart as $user_item)
+            {
+                $quantity_total+= $user_item->pivot->quantity;
+                $price_total += $user_item->pivot->quantity * $user_item->price;   
+            }
+            return response()->json([
+                'quantity' => $updated_user_item->quantity,
+                'subtotal' => $updated_user_item->quantity * $item->price,
+                'quantity_total' => $quantity_total,
+                'price_total' => $price_total
+            ]);
+        }catch(\Exception $err)
+        {
+            return $err->getMessage();
+        }
+
+    } 
 }

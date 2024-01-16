@@ -18,9 +18,9 @@
                 <td>{{$cart->pivot->quantity}}</td>
                 <td>${{$cart->price * $cart->pivot->quantity}}</td>
                 <td>
-                    <button class="btn btn-secondary" id="remove_one" value="{{$cart->pivot->id}}">-</button> 
-                   <button class="btn btn-success" id="add_one" value="{{$cart->pivot->id}}">+</button>
-                   <button class="btn btn-danger" id="remove_all" value="{{$cart->pivot->id}}"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    <button class="btn btn-secondary remove_one" value="{{$cart->pivot->id}}"><i class="fa fa-minus" aria-hidden="true"></i></button> 
+                   <button class="btn btn-success add_one" value="{{$cart->pivot->id}}"><i class="fa-solid fa-plus"></i></button>
+                   <button class="btn btn-danger remove_all" value="{{$cart->pivot->id}}"><i class="fa fa-trash" aria-hidden="true"></i></button>
                 </td>
             </tr>
         @endforeach
@@ -43,4 +43,21 @@
 
 @endsection
 @section('pagescript')
+<script>
+    $(".remove_one").click(function()
+    {
+        var user_item_id = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url: "{{route('remove_item')}}",
+            data:{user_item_id:user_item_id},
+            success:function(data){
+                console.log(data);
+            },error:function(err)
+            {
+                console.log(err);
+            }
+        });
+    });
+</script>
 @endsection

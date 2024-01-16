@@ -28,6 +28,7 @@ Route::middleware('auth','permission:user-dashboard')->group(function () {
     Route::get('/home',[HomeController::class,'home'])->name('home');
     Route::get('/add-to-cart',[CartController::class,'add_cart'])->name('add-to-cart');
     Route::get('/user-cart',[CartController::class,'user_cart'])->name('user_cart');
+    Route::get('/remove-item',[CartController::class,'remove_item'])->name('remove_item');
 });
 
 require __DIR__.'/auth.php';
