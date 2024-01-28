@@ -12,23 +12,23 @@
             <th>Action</th>
         </thead>
         @foreach($user_cart as $cart)
-            <tr>
+            <tr class="parent_row">
                 <td>{{$cart->name}}</td>
-                <td>${{$cart->price}}</td>
-                <td>{{$cart->pivot->quantity}}</td>
-                <td>${{$cart->price * $cart->pivot->quantity}}</td>
+                <td class="price">${{$cart->price}}</td>
+                <td class="quantity">{{$cart->pivot->quantity}}</td>
+                <td class="subTotal">${{$cart->price * $cart->pivot->quantity}}</td>
                 <td>
-                    <button class="btn btn-secondary remove_one" value="{{$cart->pivot->id}}"><i class="fa fa-minus" aria-hidden="true"></i></button> 
-                   <button class="btn btn-success add_one" value="{{$cart->pivot->id}}"><i class="fa-solid fa-plus"></i></button>
-                   <button class="btn btn-danger remove_all" value="{{$cart->pivot->id}}"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    <button class="btn btn-secondary remove_one" value="{{$cart->id}}"><i class="fa fa-minus" aria-hidden="true"></i></button> 
+                   <button class="btn btn-success add_one" value="{{$cart->id}}"><i class="fa-solid fa-plus"></i></button>
+                   <button class="btn btn-danger remove_all" value="{{$cart->id}}"><i class="fa fa-trash" aria-hidden="true"></i></button>
                 </td>
             </tr>
         @endforeach
         <tr>
             <th></th>
             <th>Total</th>
-            <th>{{$quantity_total}}</th>
-            <th>${{$total_price}}</th>
+            <th id="quantity_total">{{$quantity_total}}</th>
+            <th id="total_price">${{$total_price}}</th>
         </tr>
     </table>    
 
@@ -43,21 +43,4 @@
 
 @endsection
 @section('pagescript')
-<script>
-    $(".remove_one").click(function()
-    {
-        var user_item_id = $(this).val();
-        $.ajax({
-            type: 'GET',
-            url: "{{route('remove_item')}}",
-            data:{user_item_id:user_item_id},
-            success:function(data){
-                console.log(data);
-            },error:function(err)
-            {
-                console.log(err);
-            }
-        });
-    });
-</script>
 @endsection

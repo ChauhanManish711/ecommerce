@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Cart;
 use App\Models\Item;
+use Illuminate\Support\Carbon;
 class CartController extends Controller
 {
     //cart page
@@ -27,26 +28,32 @@ class CartController extends Controller
         try{
             $item_id = $request->item_id;
             $item = Item::find($request->item_id);
-            $item_in_cart = Cart::where(['item_id'=>$item_id,'user_id'=>\Auth::user()->id])->first();
             if($item->quantity == 0)
             {
+                //if Item is zero then return without adding to cart
+                //it means item is out of stock
                 return response()->json([
                     'message' => '2'
                 ]);
             }
-            $new_item_quantity = $item->quantity - 1;
-            if($new_item_quantity >=0)
+            //update quantity in item
+            $decrese_quantity = $item->update(['quantity'=>$item->quantity - 1]);
+            //find item from user cart
+            $item_in_cart = Cart::where(['item_id'=>$item_id,'user_id'=>\Auth::user()->id])->first();
+            if(isset($item_in_cart))
             {
-                $decrese_quantity = $item->update(['quantity'=>$new_item_quantity]);
-                if(isset($item_in_cart))
-                {
-                    $quantity = $item_in_cart->quantity + 1;
-                    $update_cart = $item_in_cart->update(['quantity'=>$quantity]);
-                }
-                else{
-                    $add_cart =  Cart::create(['user_id'=>\Auth::user()->id,'item_id'=>$item_id,'quantity'=>1]);
-                }
+                //set quantity for user item with adding 1
+                $quantity = $item_in_cart->quantity + 1;
+                //update quantity
+                $update_cart = $item_in_cart->update(['quantity'=>$quantity]);
             }
+            else{
+                //if item not avaible in user item (user cart) then add
+                // $add_cart =  Cart::create(['user_id'=>\Auth::user()->id,'item_id'=>$item_id,'quantity'=>1]);
+                $user = \Auth::user();
+                $user->carts()->attach($item_id,['quantity'=>1,"created_at"=> Carbon::now(),"updated_at"=> now()]);
+            }
+            //return success
             return response()->json([
                 'message' => '1'
             ]);
@@ -62,24 +69,45 @@ class CartController extends Controller
     public function remove_item(Request $request)
     {
         try{
-            $user_item_id = $request->user_item_id;
-            $user_item = Cart::find($user_item_id);
+            $item_id = $request->item_id;
+            //step : 1  (find the item in cart and update the quantity into the cart)
+            //find user cart 
+            $user_item = Cart::where(['item_id'=>$item_id,'user_id'=>\Auth::user()->id])->first();
+            //remove a quantity from user cart
             $user_item->update(['quantity'=>$user_item->quantity-1]);
-            $updated_user_item = Cart::find($user_item_id);
-            $item = Item::find($updated_user_item->item_id);
+            
+            //step : 2 (Find the item in item table and update the quantity , because it remove from user cart table now)
+            //find item in item table
+            $item = Item::find($item_id);
+            //add a quantity into Item table
+            $item->update(['quantity'=>$item->quantity+1]);
+            //fetch updated cart item
+            if(isset($user_item) && $user_item->quantity == 0)
+            {
+                $user_item->delete();
+                \Session::flash('success','A item is successfully removed from cart');
+                return response()->json([
+                    'location' => route('user_cart')
+                ]);
+            }
+
+            //step : 3 (Get the items from user cart and calculate price etc and return the values)
             $cart = \Auth::user()->carts()->get();
             $quantity_total = 0;
             $price_total = 0;
-            foreach($cart as $user_item)
+            foreach($cart as $userItem)
             {
-                $quantity_total+= $user_item->pivot->quantity;
-                $price_total += $user_item->pivot->quantity * $user_item->price;   
+                $quantity_total += $userItem->pivot->quantity;
+                $price_total += $userItem->pivot->quantity * $userItem->price;  
             }
-            return response()->json([
-                'quantity' => $updated_user_item->quantity,
-                'subtotal' => $updated_user_item->quantity * $item->price,
+            $data = [ 
+                'quantity' => $user_item->quantity,
+                'subtotal' => $user_item->quantity * $item->price,
                 'quantity_total' => $quantity_total,
                 'price_total' => $price_total
+            ];
+            return response()->json([
+               'data'=>$data
             ]);
         }catch(\Exception $err)
         {
