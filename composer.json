@@ -10,6 +10,8 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
+        "maatwebsite/excel": "*",
+        "phpoffice/phpspreadsheet": "^2.0",
         "spatie/laravel-permission": "^6.1"
     },
     "require-dev": {

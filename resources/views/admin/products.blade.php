@@ -1,9 +1,13 @@
 @extends('..layouts.app')
 @section('main')
 <h2 class="text-center mt-2" style="color:darkblue" id="record_listing_heading">Items</h2>
-<div class="mt-4"  style="width:95%;text-align: end;"><a class="btn btn-primary" href="{{route('add.items')}}">+ Add Items</a>
-    <br><br>
-    <div style="width:95%;align-items:end;">    
+<div class="mt-4"  style="width:95%;text-align: end;">
+    @if(Auth::user()->hasPermissionTo(8))
+        <div style="width:95%;align-items:end;">    
+        <a class="btn btn-primary" href="{{route('add.items')}}">+ Add Items</a>
+        </div>
+    @endif
+    <div style="width:95%;align-items:end;margin-top:4px;">    
         <input type="text" name="search" id="search_item" placeholder="search item" style="border: 1px solid #ccc;
         border-radius: 4px;padding: 12px 20px;">
     </div>
@@ -24,7 +28,6 @@
 @if(Session::has('error'))
 <h4 class="text-danger">{{Session::get('error')}}</h4>
 @endif
-<h3 class="text-center">All Items</h3>
 <div class="text-center">
     <table  class="table" id="record_listing_container" style="display:none;width:90%;">
     <thead>

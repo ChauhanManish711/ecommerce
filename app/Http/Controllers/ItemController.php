@@ -187,5 +187,5 @@ class ItemController extends Controller
         }
         Session::flash('success',ucfirst($item->name)." is successsfully update");  
         return response()->json(['location'=>route('products.all')]);
-    }   
+    }
 }

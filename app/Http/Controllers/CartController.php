@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Cart;
 use App\Models\Item;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 class CartController extends Controller
 {
     //cart page
@@ -115,4 +116,24 @@ class CartController extends Controller
         }
 
     } 
+    //delete user item from cart
+    public function delete_cart($item_id)
+    {
+        try{
+            //step:1 (Find item and remove from user cart)
+            $user_cart = Cart::where(['item_id'=>$item_id,'user_id'=>\Auth::user()->id])->first();
+            $user_cart->delete();
+            
+            //step:2 (Find item from item table and update quantity)
+            $item = Item::find($item_id);
+            $item->update(['quantity'=>$item->quantity+$user_cart->quantity]);
+            
+            \Session::flash('success','Successfully deleted.');
+            return redirect()->back();
+        }catch(\Exception $err){
+            Log::error(\Auth::user()->email.','.$err->getMessage());
+            \Session::flash('error','Sorry,Something went wrong.');
+            return redirect()->back();
+        }
+    }
 }

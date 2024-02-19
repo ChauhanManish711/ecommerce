@@ -1,5 +1,10 @@
 @extends('..user.main')
 @section('main')
+<div class="text-center">
+    @if(Session::has('success'))
+        <h3 class="text-success">{{Session::get('success')}}</h3>
+    @endif
+</div>
 <h2 class="text-center text-primary mt-4">Cart</h2>
 @if($user_cart->count()>0)
 <div class="text-center">
@@ -20,7 +25,7 @@
                 <td>
                     <button class="btn btn-secondary remove_one" value="{{$cart->id}}"><i class="fa fa-minus" aria-hidden="true"></i></button> 
                    <button class="btn btn-success add_one" value="{{$cart->id}}"><i class="fa-solid fa-plus"></i></button>
-                   <button class="btn btn-danger remove_all" value="{{$cart->id}}"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                   <a href="{{route('delete_cart',['item'=>$cart->id])}}" class="btn btn-danger remove_all" value="{{$cart->id}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
                 </td>
             </tr>
         @endforeach
